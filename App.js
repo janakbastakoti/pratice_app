@@ -1,6 +1,8 @@
 import { Camera, CameraType } from 'expo-camera';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { storeObject, getObject } from './helper'
 
 export default function App() {
   const [type, setType] = useState(CameraType.back);
@@ -26,9 +28,38 @@ export default function App() {
     setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
   }
 
+
+  // useEffect(() => {
+
+  //   const temp = getObject('Image');
+  //   console.log(temp, "temp")
+
+  // }, [])
+
+
+
+
+
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type}
+
+
+      <TouchableOpacity style={styles.button}
+        onPress={async () => {
+          // storeObject('Image', 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540janakbastakoti%252Fpratice_app/Camera/3fc3d056-0c7c-4656-a8b1-de0a8d1bed25.jpg')
+
+          // const temp = getObject('Image');
+          // console.log(temp, "temp")
+          getObject('Image').then(a => {
+            console.log(a, 'a')
+          })
+
+        }}
+      >
+        <Text style={styles.text}>Flip Camera</Text>
+      </TouchableOpacity>
+
+      {/* <Camera style={styles.camera} type={type}
          ref={(ref) => {
           setCameraRef(ref);
         }}
@@ -36,18 +67,19 @@ export default function App() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} 
             onPress={async () => {
-              if (cameraRef) {
-                let photo = await cameraRef.takePictureAsync();
-                console.log(photo)
-                // props.setImage(photo);
-                // props.setModalVisible();
-              }
+              storeObject('Image', 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540janakbastakoti%252Fpratice_app/Camera/3fc3d056-0c7c-4656-a8b1-de0a8d1bed25.jpg')
+              // if (cameraRef) {
+              //   let photo = await cameraRef.takePictureAsync();
+              //   console.log(photo)
+              //   // props.setImage(photo);
+              //   // props.setModalVisible();
+              // }
             }}
           >
             <Text style={styles.text}>Flip Camera</Text>
           </TouchableOpacity>
         </View>
-      </Camera>
+      </Camera> */}
       {/* <Image style={{height: 300, width: 300}}
       source={{uri: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540janakbastakoti%252Fpratice_app/Camera/3fc3d056-0c7c-4656-a8b1-de0a8d1bed25.jpg'}}
 
@@ -60,6 +92,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white'
   },
   camera: {
     flex: 1,
@@ -78,6 +112,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'red',
+    marginTop: 100
   },
 });
